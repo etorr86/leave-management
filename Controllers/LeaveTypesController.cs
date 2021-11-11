@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System;
 using leave_management.Contracts;
 using leave_management.Data;
 using leave_management.Models;
@@ -24,7 +25,7 @@ namespace leave_management.Controllers
         {
             // get all leave types
             var leaveTypes = _leaveTypeRepository.FindAll().ToList();
-            var model = _mapper.Map<List<DetailsLeaveTypeViewModel>>(leaveTypes);
+            var model = _mapper.Map<List<LeaveTypeViewModel>>(leaveTypes);
             return View(model);
         }
 
@@ -43,10 +44,24 @@ namespace leave_management.Controllers
         // POST: LeaveTypesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(LeaveTypeViewModel model)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var leaveType = _mapper.Map<LeaveType>(model);
+                leaveType.DateCreated = DateTime.Now;
+
+                var isSuccess = _leaveTypeRepository.Create(leaveType);
+                if (!isSuccess)
+                {
+                    ModelState.AddModelError("", "Something went wrong...");
+                    View(model);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             catch
