@@ -8,6 +8,7 @@ namespace leave_management.Contracts
     public interface IRepositoryBase<T> where T : class
     {
         ICollection<T> FindAll();
+        bool ItExists(int id);
         T FindById(int id);
         bool Create(T entity);
         bool Update(T entity);
