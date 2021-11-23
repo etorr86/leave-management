@@ -122,21 +122,6 @@ namespace leave_management.Controllers
         // GET: LeaveTypesController/Delete/5
         public ActionResult Delete(int id)
         {
-            if (!_leaveTypeRepository.ItExists(id))
-            {
-                return NotFound();
-            }
-
-            var leaveType = _leaveTypeRepository.FindById(id);
-            var model = _mapper.Map<LeaveTypeViewModel>(leaveType);
-            return View();
-        }
-
-        // POST: LeaveTypesController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, LeaveTypeViewModel leave)
-        {
             try
             {
                 var leavetype = _leaveTypeRepository.FindById(id);
@@ -147,13 +132,13 @@ namespace leave_management.Controllers
                 var isSuccess = _leaveTypeRepository.Delete(leavetype);
                 if (!isSuccess)
                 {
-                    View(leavetype);
+                    BadRequest();
                 }
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View(leave);
+                return BadRequest();
             }
         }
     }
