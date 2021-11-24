@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace leave_management.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class LeaveTypesController : Controller
     {
         private readonly ILeaveTypeRepository _leaveTypeRepository;
@@ -20,6 +22,7 @@ namespace leave_management.Controllers
             _leaveTypeRepository = leaveTypeRepository;
             _mapper = mapper;
         }
+
         // GET: LeaveTypesController
         public ActionResult Index()
         {

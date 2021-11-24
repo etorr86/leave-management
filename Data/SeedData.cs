@@ -40,11 +40,12 @@ namespace leave_management.Data
             {
                 var adminUser = new IdentityUser
                 {
-                    UserName = "admin",
-                    Email = "admin@localhost"
+                    UserName = "admin@localhost.com",
+                    Email = "admin@localhost.com",
+                    EmailConfirmed = true
                 };
 
-                var result = userManager.CreateAsync(adminUser, "password").Result;
+                var result = userManager.CreateAsync(adminUser, "Password123*").Result;
                 if (result.Succeeded)
                 {
                     userManager.AddToRoleAsync(adminUser, "Administrator").Wait();
